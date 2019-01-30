@@ -11,16 +11,16 @@
 	<script>
 		var initialized = false;
 		function button_callback() {
-			/*
-				(0) check whether we're already running face detection
-			*/
+		
+			// 如果已经检测过了，则直接返回
 			if(initialized)
 				return; // if yes, then do not initialize everything again
-			/*
-				(1) prepare the pico.js face detector
-			*/
+		
+				// 基于视频最后五帧来检测
 			var update_memory = pico.instantiate_detection_memory(5); // we will use the detecions of the last 5 frames
 			var facefinder_classify_region = function(r, c, s, pixels, ldim) {return -1.0;};
+
+			// 下载人脸检测级联器文件
 			var cascadeurl = 'https://raw.githubusercontent.com/nenadmarkus/pico/c2e81f9d23cc11d1a612fd21e4f9de0921a5d0d9/rnt/cascades/facefinder';
 			fetch(cascadeurl).then(function(response) {
 				response.arrayBuffer().then(function(buffer) {
@@ -29,21 +29,21 @@
 					console.log('* cascade loaded');
 				})
 			})
-			/*
-				(2) get the drawing context on the canvas and define a function to transform an RGBA image to grayscale
-			*/
+			
+
+			// 得到canvas元素的绘制上下文，并且将图片灰度处理
 			var ctx = document.getElementsByTagName('canvas')[0].getContext('2d');
 			function rgba_to_grayscale(rgba, nrows, ncols) {
 				var gray = new Uint8Array(nrows*ncols);
 				for(var r=0; r<nrows; ++r)
 					for(var c=0; c<ncols; ++c)
-						// gray = 0.2*red + 0.7*green + 0.1*blue
+						
 						gray[r*ncols + c] = (2*rgba[r*4*ncols+4*c+0]+7*rgba[r*4*ncols+4*c+1]+1*rgba[r*4*ncols+4*c+2])/10;
 				return gray;
 			}
-			/*
-				(3) this function is called each time a video frame becomes available
-			*/
+		
+
+			// 当视频帧准备就绪，则调用下面处理函数；其实每一帧即使静态的图片
 			var processfn = function(video, dt) {
 				// render the video frame to the canvas element and extract RGBA pixel data
 				ctx.drawImage(video, 0, 0);

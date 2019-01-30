@@ -74,12 +74,13 @@ pico.unpack_cascade = function(bytes) {
     c = 256 * c;
     var root = 0;
     var o = 0.0;
-    var pow2tdepth = Math.pow(2, tdepth) >> 0; // '>>0' transforms this number to int
 
+    // 数值取整操作
+    var pow2tdepth = Math.pow(2, tdepth) >> 0;
     for (var i = 0; i < ntrees; ++i) {
       idx = 1;
       for (var j = 0; j < tdepth; ++j)
-        // we use '>> 8' here to perform an integer division: this seems important for performance
+        // 位运算提高性能
         idx =
           2 * idx +
           (pixels[
@@ -119,7 +120,8 @@ pico.run_cascade = function(image, classify_region, params) {
   var detections = [];
 
   while (scale <= maxsize) {
-    var step = Math.max(shiftfactor * scale, 1) >> 0; // '>>0' transforms this number to int
+    // 取整运算
+    var step = Math.max(shiftfactor * scale, 1) >> 0;
     var offset = (scale / 2 + 1) >> 0;
 
     for (var r = offset; r <= nrows - offset; r += step)
