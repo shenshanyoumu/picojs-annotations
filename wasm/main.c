@@ -10,19 +10,17 @@ int find_faces(
 	float scalefactor,
 	float shiftfactor,
 	float minfacesize,
-	float maxfacesize
-)
+	float maxfacesize)
 {
 	static char facefinder[] = {
-		#include "facefinder.hex"
+#include "facefinder.hex"
 	};
 
 	return find_objects(
-			rcsq, maxndetections,
-			facefinder,
-			0.0f,
-			pixels, nrows, ncols, ldim,
-			scalefactor, shiftfactor,
-			minfacesize, maxfacesize
-	);
+		rcsq, maxndetections,
+		facefinder,
+		0.0f,
+		pixels, nrows, ncols, ldim,
+		scalefactor, shiftfactor,
+		minfacesize, maxfacesize);
 }
